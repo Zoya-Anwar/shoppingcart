@@ -1,7 +1,5 @@
 package com.xgen.interview;
 
-import com.xgen.interview.Pricer;
-import com.xgen.interview.ShoppingCart;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
