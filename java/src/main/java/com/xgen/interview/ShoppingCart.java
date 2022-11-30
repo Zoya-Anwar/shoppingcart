@@ -60,19 +60,27 @@ public class ShoppingCart implements IShoppingCart {
     public void printReceipt() {
     	String separator = " " + config.getProperty("separator", "-") + " ";
         Object[] keys = contents.keySet().toArray();
-
+        
         for (int i = 0; i < Array.getLength(keys) ; i++) {
             Integer price = pricer.getPrice((String)keys[i]) * contents.get(keys[i]);
             float priceFloat = price / 100;
             String priceString = String.format("€%.2f", priceFloat);
-
-            System.out.println(keys[i] + separator + contents.get(keys[i]) + separator + priceString);
+        	if (config.getProperty("priceFirst", "False").equals("False")) {
+                System.out.println(keys[i] + separator + contents.get(keys[i]) + separator + priceString);
+        	}
+            else {
+                System.out.println(priceString + separator + keys[i] + separator + contents.get(keys[i]));
+            }
         }
         
         float totalPriceFloat = totalPrice / 100;
         String totalPriceString = String.format("€%.2f", totalPriceFloat);
-        System.out.println("Total" + separator +  totalPriceString);
-        
+        if (config.getProperty("priceFirst", "False").equals("False")) { 
+            System.out.println("Total" + separator + totalPriceString);
+        } 
+        else {
+            System.out.println(totalPriceString + separator + "Total");
+        }
     }
 
 }
