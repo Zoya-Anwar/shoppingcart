@@ -9,7 +9,7 @@ import java.util.*;
  * Please write a replacement
  */
 public class ShoppingCart implements IShoppingCart {
-    private HashMap<String, Integer> contents = new HashMap<>();
+    private LinkedHashMap<String, Integer> contents = new LinkedHashMap<>();
     private Pricer pricer;
     private int totalPrice = 0;
 
@@ -39,6 +39,7 @@ public class ShoppingCart implements IShoppingCart {
             int existing = contents.get(itemType);
             contents.put(itemType, existing + number);
         }
+        totalPrice = totalPrice + (pricer.getPrice(itemType)*number);
     }
 
     public void printReceipt() {
@@ -52,6 +53,9 @@ public class ShoppingCart implements IShoppingCart {
             System.out.println(keys[i] + " - " + contents.get(keys[i]) + " - " + priceString);
         }
         
+        float totalPriceFloat = totalPrice / 100;
+        String totalPriceString = String.format("€%.2f", totalPriceFloat);
+        System.out.println("Total" + " - " + totalPriceString);
         
     }
 
