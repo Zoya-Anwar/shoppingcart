@@ -91,7 +91,19 @@ public class ShoppingCartTest {
     }
     
     @Test 
+    public void canFormatEmptyReceipt() {
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+        sc.printReceipt();
+        String result = myOut.toString();
+        
+        assertEquals(String.format("Total - €0.00%n"), result);
+    }
+    
+    @Test 
     public void canFormatPriceFirstReceipt() {
+        sc = new ShoppingCart(new Pricer(), "/configPriceFirst.properties");
+
         sc.addItem("apple", 2);
         sc.addItem("banana", 1);
         sc.addItem("apple", 1);
@@ -104,6 +116,19 @@ public class ShoppingCartTest {
         assertEquals(String.format("€3.00 - apple - 3%n€2.00 - banana - 1%n€5.00 - Total%n"), result);
     }
     
+    @Test 
+    public void canFormatCustomSeparatorReceipt() {
+        sc = new ShoppingCart(new Pricer(), "/configCustomSeparator.properties");
+
+        sc.addItem("apple", 1);
+        
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+        sc.printReceipt();
+        String result = myOut.toString();
+        
+        assertEquals(String.format("apple : 1 : €1.00%nTotal : €1.00%n"), result);
+    }
 }
 
 

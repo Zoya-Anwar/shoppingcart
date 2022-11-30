@@ -12,12 +12,27 @@ public class ShoppingCart implements IShoppingCart {
     private LinkedHashMap<String, Integer> contents = new LinkedHashMap<>();
     private Pricer pricer;
     private int totalPrice = 0;
+    private Properties config = new Properties();
 
     public ShoppingCart(Pricer pricer) {
         this.pricer = pricer;
+        this.loadProperties("/config.properties");
     }
     
-    public HashMap<String, Integer> getContents() {
+    public ShoppingCart(Pricer pricer, String propertiesPath) {
+        this.pricer = pricer;
+        this.loadProperties(propertiesPath);
+    }
+    
+    private void loadProperties(String propertiesPath) {
+        try {
+            config.load(this.getClass().getResourceAsStream(propertiesPath));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public LinkedHashMap<String, Integer> getContents() {
         return contents;
     }
     
@@ -43,6 +58,7 @@ public class ShoppingCart implements IShoppingCart {
     }
 
     public void printReceipt() {
+    	String separator = " " + config.getProperty("separator", "-") + " ";
         Object[] keys = contents.keySet().toArray();
 
         for (int i = 0; i < Array.getLength(keys) ; i++) {
@@ -50,12 +66,12 @@ public class ShoppingCart implements IShoppingCart {
             float priceFloat = price / 100;
             String priceString = String.format("€%.2f", priceFloat);
 
-            System.out.println(keys[i] + " - " + contents.get(keys[i]) + " - " + priceString);
+            System.out.println(keys[i] + separator + contents.get(keys[i]) + separator + priceString);
         }
         
         float totalPriceFloat = totalPrice / 100;
         String totalPriceString = String.format("€%.2f", totalPriceFloat);
-        System.out.println("Total" + " - " + totalPriceString);
+        System.out.println("Total" + separator +  totalPriceString);
         
     }
 
