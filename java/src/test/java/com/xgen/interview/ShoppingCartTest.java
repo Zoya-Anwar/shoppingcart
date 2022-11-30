@@ -18,6 +18,7 @@ public class ShoppingCartTest {
 	@Before
 	public void beforeTests() {
 		sc = new ShoppingCart(pricer);
+        assertEquals(0, sc.getTotalPrice());
 	}
 	
     @Test
@@ -25,6 +26,7 @@ public class ShoppingCartTest {
         sc.addItem("apple", 1);
         assertTrue(sc.getContents().containsKey("apple"));
         assertEquals(1, sc.getItemCount());
+        assertEquals(pricer.getPrice("apple").intValue(), sc.getTotalPrice());
     }
 
     @Test
@@ -32,6 +34,7 @@ public class ShoppingCartTest {
         sc.addItem("apple", 2);
         assertTrue(sc.getContents().containsKey("apple"));
         assertEquals(2, sc.getItemCount());
+        assertEquals(pricer.getPrice("apple").intValue()*2, sc.getTotalPrice());
     }
 
     @Test
@@ -42,6 +45,8 @@ public class ShoppingCartTest {
         assertTrue(sc.getContents().containsKey("apple"));
         assertTrue(sc.getContents().containsKey("banana"));
         assertEquals(3, sc.getItemCount());
+        assertEquals(pricer.getPrice("apple").intValue()*2+pricer.getPrice("banana").intValue()*1,
+   			 		sc.getTotalPrice());
     }
 
     @Test
@@ -52,11 +57,13 @@ public class ShoppingCartTest {
 
         assertTrue(sc.getContents().containsKey("crisps"));
         assertEquals(2, sc.getItemCount());
+        assertEquals(0, sc.getTotalPrice());
     }
     
 	@Test 
 	public void emptyShoppingCart() {
         assertEquals(0, sc.getItemCount());
+        assertEquals(0, sc.getTotalPrice());
 	}
 	
     @Test
@@ -65,6 +72,8 @@ public class ShoppingCartTest {
         sc.addItem("apple", 2);
         assertTrue(sc.getContents().containsKey("apple"));
         assertEquals(4, sc.getItemCount());
+        assertEquals(pricer.getPrice("apple").intValue()*4,
+   			         sc.getTotalPrice());
     }
     
     @Test 
