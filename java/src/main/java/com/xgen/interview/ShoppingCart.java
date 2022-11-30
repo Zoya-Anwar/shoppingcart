@@ -104,6 +104,11 @@ public class ShoppingCart implements IShoppingCart {
     * configurations for separator and price first or default if not present
     */
     public void printReceipt() {
+    	// TO DO: Refactor method to smaller functions or to call on a separate class
+    	// customReceipt to improve readability and code reusability
+    	// e.g. a custom print function which adds separators for you, 
+    	// splitting this into two functions priceFirst, priceLast to improve readability 
+    	
     	String separator = " " + config.getProperty("separator", "-") + " ";
         Object[] keys = contents.keySet().toArray();
         
